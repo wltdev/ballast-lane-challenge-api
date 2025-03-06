@@ -1,0 +1,7 @@
+/.dbdata
+app-backend/storage/tenant*
+app-backend/--cache-directory*
+.idea/
+app-backend/coverage/*
+app-backend/.env_checkagro_dev
+app-backend/.env_checkagro_prd
