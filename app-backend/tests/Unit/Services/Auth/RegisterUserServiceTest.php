@@ -3,7 +3,7 @@
 use App\Models\User;
 use App\Repositories\User\UserRepository;
 use App\Services\Auth\GenerateAccessToken;
-use App\Services\User\RegisterUserService;
+use App\Services\Auth\RegisterUserService;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Exceptions\JWTException;

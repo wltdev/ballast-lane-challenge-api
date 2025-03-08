@@ -1,0 +1,244 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Ballast Lane Challenge API Documentation",
+        "description": "API documentation for Ballast Lane Challenge application",
+        "contact": {
+            "email": "mdias.welinton@gmail.com"
+        },
+        "license": {
+            "name": "Apache 2.0",
+            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+        },
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "Ballast Lane Challenge API Server"
+        },
+        {
+            "url": "http://localhost:8083",
+            "description": "Docker container"
+        }
+    ],
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register new user",
+                "description": "Registers a new user",
+                "operationId": "ca7c0cb6772de9bffbb8c896980cebc8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterUserRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "$ref": "#/components/schemas/AuthUser"
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User registered successfully"
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "success"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "AuthUser": {
+                "title": "AuthUser",
+                "description": "AuthUser",
+                "properties": {
+                    "user": {
+                        "title": "user",
+                        "description": "User object",
+                        "properties": {
+                            "user": {
+                                "$ref": "#/components/schemas/User"
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "access_token": {
+                        "title": "access_token",
+                        "description": "Access token string",
+                        "type": "string",
+                        "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+                    },
+                    "token_type": {
+                        "title": "token_type",
+                        "description": "Token_type string",
+                        "type": "string",
+                        "example": "bearer"
+                    },
+                    "success": {
+                        "title": "success",
+                        "description": "success string",
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "AuthUser"
+                }
+            },
+            "User": {
+                "title": "User",
+                "description": "User model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID of the user",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "name": {
+                        "title": "Name",
+                        "description": "Name of the user",
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "email": {
+                        "title": "Email",
+                        "description": "Email of the user",
+                        "type": "string",
+                        "example": "john@example.com"
+                    },
+                    "password": {
+                        "title": "Password",
+                        "description": "Password of the user",
+                        "type": "string",
+                        "example": "password123"
+                    },
+                    "created_at": {
+                        "title": "Created at",
+                        "description": "Created at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2024-01-10T14:30:00+00:00"
+                    },
+                    "updated_at": {
+                        "title": "Updated at",
+                        "description": "Updated at",
+                        "type": "string",
+                        "format": "datetime",
+                        "example": "2024-01-10T14:30:00+00:00"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "User"
+                }
+            },
+            "RegisterUserRequest": {
+                "title": "Register User Request",
+                "description": "Register user request",
+                "required": [
+                    "name",
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "description": "Name of the user",
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "email": {
+                        "title": "email",
+                        "description": "Email of the user",
+                        "type": "string",
+                        "example": "john@example.com"
+                    },
+                    "password": {
+                        "title": "password",
+                        "description": "Password of the user",
+                        "type": "string",
+                        "example": "password123"
+                    },
+                    "password_confirmation": {
+                        "title": "password_confirmation",
+                        "description": "Confirm password of the user",
+                        "type": "string",
+                        "example": "password123"
+                    }
+                },
+                "type": "object"
+            },
+            "UserRequest": {
+                "title": "Register User Request",
+                "description": "Register user request",
+                "required": [
+                    "name",
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "name": {
+                        "title": "name",
+                        "description": "Name of the user",
+                        "type": "string",
+                        "example": "John"
+                    },
+                    "email": {
+                        "title": "email",
+                        "description": "Email of the user",
+                        "type": "string",
+                        "example": "john@example.com"
+                    },
+                    "password": {
+                        "title": "password",
+                        "description": "Password of the user",
+                        "type": "string",
+                        "example": "password123"
+                    },
+                    "passwor_confirmationd": {
+                        "title": "password_confirmation",
+                        "description": "Confirm password of the user",
+                        "type": "string",
+                        "example": "password123"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "API Endpoints of Authentication"
+        }
+    ]
+}

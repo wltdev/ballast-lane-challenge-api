@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Auth;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,8 +25,6 @@ class RegisterUserTest extends TestCase
         $user = User::where('email', 'john@example.com')->first();
 
         $this->assertNotNull($user);
-
-        // dd($response->json());
 
         // Response body
         $response->assertJson([

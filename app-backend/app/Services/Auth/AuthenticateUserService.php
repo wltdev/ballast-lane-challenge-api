@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\User;
+namespace App\Services\Auth;
 
 use App\Repositories\User\UserRepositoryInterface;
 use App\Services\Auth\GenerateAccessToken;
