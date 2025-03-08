@@ -7,6 +7,7 @@ use App\Http\Requests\Project\CreateProjectRequest;
 use App\Http\Requests\Project\UpdateProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Services\Project\CreateProjectService;
+use App\Services\Project\DeleteProjectService;
 use App\Services\Project\GetAllProjectService;
 use App\Services\Project\GetOneProjectService;
 use App\Services\Project\UpdateProjectService;
@@ -18,7 +19,8 @@ class ProjectController extends Controller
         private CreateProjectService $createProjectService,
         private UpdateProjectService $updateProjectService,
         private GetAllProjectService $getAllProjectService,
-        private GetOneProjectService $getOneProjectService
+        private GetOneProjectService $getOneProjectService,
+        private DeleteProjectService $deleteProjectService
     ) {}
 
     public function index()
@@ -47,6 +49,7 @@ class ProjectController extends Controller
 
         return response()->json([
             'success' => true,
+            'message' => 'Project created successfully',
             'data' => new ProjectResource($record)
         ], 201);
     }
@@ -57,7 +60,19 @@ class ProjectController extends Controller
 
         return response()->json([
             'success' => true,
+            'message' => 'Project updated successfully',
             'data' => new ProjectResource($record)
+        ], 200);
+    }
+
+    public function destroy(int $id)
+    {
+        $record = $this->deleteProjectService->execute($id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Project deleted successfully',
+            'data' => $record
         ], 200);
     }
 }

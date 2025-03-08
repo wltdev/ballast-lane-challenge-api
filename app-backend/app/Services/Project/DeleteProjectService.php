@@ -11,7 +11,13 @@ class DeleteProjectService
     public function execute(int $id)
     {
         try {
-            return $this->projectRepository->delete($id);
+            $record = $this->projectRepository->findById($id);
+
+            if (!$record) {
+                throw new \Exception('Project not found', 404);
+            }
+
+            return $record->delete();
         } catch (\Exception $e) {
             throw $e;
         }
