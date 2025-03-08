@@ -13,7 +13,7 @@ class AuthenticateUserService
         private GenerateAccessToken $generateAccessToken
     ) {}
 
-    public function login(array $data): array
+    public function execute(array $data): array
     {
         try {
             $validator = Validator::make($data, [
@@ -33,22 +33,12 @@ class AuthenticateUserService
             $auth = $this->generateAccessToken->execute($credentials);
 
             if (!$auth) {
-                return ['error' => 'Unauthorized', 'status' => 401];
+                throw new \Exception('Failed to authenticate user', 401);
             }
 
             return ['data' => $auth, 'status' => 200];
         } catch (\Exception $e) {
-            return ['error' => $e->getMessage(), 'status' => 500];
-        }
-    }
-
-    public function refresh()
-    {
-        try {
-            $auth = $this->generateAccessToken->execute();
-            return ['data' => $auth, 'status' => 200];
-        } catch (\Exception $e) {
-            return ['error' => $e->getMessage(), 'status' => 500];
+            throw $e;
         }
     }
 }

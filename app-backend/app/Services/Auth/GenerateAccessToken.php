@@ -3,6 +3,8 @@
 namespace App\Services\Auth;
 
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 use Tymon\JWTAuth\Exceptions\JWTException;
 
 class GenerateAccessToken
@@ -10,13 +12,7 @@ class GenerateAccessToken
     public function execute($credentials = null)
     {
         try {
-            if ($credentials) {
-                $token = Auth::attempt($credentials);
-            } else {
-                $token = Auth::refresh();
-            }
-
-            if (!$token) {
+            if (!$token = JWTAuth::attempt($credentials)) {
                 return null;
             }
 

@@ -2,8 +2,9 @@
 
 use App\Models\User;
 use App\Services\Auth\GenerateAccessToken;
-use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Facades\Auth;
 
 describe('GenerateAccessToken', function () {
     beforeEach(function () {
@@ -12,10 +13,10 @@ describe('GenerateAccessToken', function () {
 
     it('should generate token with valid credentials', function () {
         $credentials = ['email' => 'john@example.com', 'password' => 'password123'];
-        $user = new User(['email' => 'john@example.com']);
+        $user = Mockery::mock(User::class);
         $token = 'fake_jwt_token';
 
-        Auth::shouldReceive('attempt')
+        JWTAuth::shouldReceive('attempt')
             ->once()
             ->with($credentials)
             ->andReturn($token);
@@ -30,14 +31,14 @@ describe('GenerateAccessToken', function () {
             ->toHaveKeys(['access_token', 'token_type', 'user'])
             ->access_token->toBe($token)
             ->token_type->toBe('bearer')
-            ->and($result['user'])->toBeInstanceOf(User::class);
+            ->and($result['user'])->toBe($user);
     });
 
     it('should throw exception when authentication fails', function () {
         $credentials = ['email' => 'john@example.com', 'password' => 'password123'];
         $exception = new JWTException('Token could not be created');
 
-        Auth::shouldReceive('attempt')
+        JWTAuth::shouldReceive('attempt')
             ->once()
             ->with($credentials)
             ->andThrow($exception);

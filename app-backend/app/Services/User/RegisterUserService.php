@@ -27,7 +27,7 @@ class RegisterUserService
             ]);
 
             if (!$auth) {
-                throw new \Exception('Failed to authenticate user');
+                throw new \Exception('Failed to authenticate user', 401);
             }
 
             return [
