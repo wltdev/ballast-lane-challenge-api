@@ -4,7 +4,6 @@ namespace App\Services\Auth;
 
 use App\Repositories\User\UserRepositoryInterface;
 use App\Services\Auth\GenerateAccessToken;
-use Illuminate\Support\Facades\Validator;
 
 class AuthenticateUserService
 {
@@ -16,13 +15,10 @@ class AuthenticateUserService
     public function execute(array $data): array
     {
         try {
-            $validator = Validator::make($data, [
-                'email' => 'required|email',
-                'password' => 'required|string|min:6',
-            ]);
+            $user = $this->userRepository->findByField('email', $data['email']);
 
-            if ($validator->fails()) {
-                return ['errors' => $validator->errors(), 'status' => 422];
+            if (!$user) {
+                throw new \Exception('User not found', 404);
             }
 
             $credentials = [

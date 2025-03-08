@@ -23,6 +23,8 @@ class GenerateAccessToken
             ];
         } catch (JWTException $e) {
             throw $e;
+        } catch (\Exception $e) {
+            throw $e;
         }
     }
 }
