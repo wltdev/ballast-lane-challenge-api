@@ -11,4 +11,9 @@ class TaskRepository extends BaseRepository implements TaskRepositoryInterface
     {
         parent::__construct($model);
     }
+
+    public function createMany(array $data): void
+    {
+        $this->model->insert($data);
+    }
 }

@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Requests\Task;
+namespace App\Http\Requests\Project;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
 
-class UpdateTaskRequest extends FormRequest
+class UpdateProjectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,10 +20,10 @@ class UpdateTaskRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'title' => 'Title',
+            'name' => 'Project Name',
             'description' => 'Description',
-            'status' => 'Status',
-            'user_id' => 'User'
+            'user_id' => 'User',
+            'tasks' => 'Tasks'
         ];
     }
 
@@ -33,7 +33,10 @@ class UpdateTaskRequest extends FormRequest
             'required' => 'The :attribute field is required.',
             'exists' => 'The :attribute does not exist.',
             'string' => 'The :attribute must be a string.',
-            'in' => 'The :attribute must be in the list.',
+            'in' => 'The :attribute must be one of: :values.',
+            'array' => 'The :attribute must be an array.',
+            'tasks.*.title' => 'The :attribute field is required.',
+            'tasks.*.status' => 'The :attribute must be one of: :values.',
         ];
     }
 
@@ -48,10 +51,14 @@ class UpdateTaskRequest extends FormRequest
         $user = Auth::user();
 
         return [
-            'user_id' => 'required|exists:users,id|in:' . $user->id,
-            'title' => 'required|string',
+            'name' => 'required|string',
             'description' => 'required|string',
-            'status' => 'required|string|in:pending,in_progress,completed',
+            'status' => 'string|in:pending,in_progress,completed',
+            'user_id' => 'exists:users,id|in:' . $user->id,
+            'tasks' => 'array',
+            'tasks.*.id' => 'exists:tasks,id',
+            'tasks.*.title' => 'required|string',
+            'tasks.*.status' => 'string|in:pending,in_progress,completed',
         ];
     }
 

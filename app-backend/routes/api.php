@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Project\ProjectController;
 use App\Http\Controllers\Task\TaskController;
 use Illuminate\Support\Facades\Route;
 
@@ -13,5 +14,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/me', [AuthController::class, 'me']);
 
-    Route::apiResource('tasks', TaskController::class);
+    Route::apiResource('projects', ProjectController::class);
+
+    Route::delete('tasks/{id}', [TaskController::class, 'destroy']);
 });

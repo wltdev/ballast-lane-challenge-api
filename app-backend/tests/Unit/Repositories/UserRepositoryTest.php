@@ -46,7 +46,7 @@ describe('UserRepository', function () {
 
     it('should return all users', function () {
         $expectedUsers = collect([new User(['id' => 1]), new User(['id' => 2])]);
-        $this->userMock->shouldReceive('all')->once()->andReturn($expectedUsers);
+        $this->userMock->shouldReceive('get')->once()->andReturn($expectedUsers);
 
         $users = $this->repository->getAll();
 
