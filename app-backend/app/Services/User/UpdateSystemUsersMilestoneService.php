@@ -14,6 +14,7 @@ class UpdateSystemUsersMilestoneService
         try {
             $count = $this->userRepository->count();
             $milestoneLevel = floor($count / 100);
+            Log::info("Count: {$count}, Milestone Level: {$milestoneLevel}");
 
             if ($milestoneLevel > 0) {
                 $this->userRepository->updateMilestone("milestone {$milestoneLevel}");
