@@ -11,4 +11,14 @@ class UserRepository extends BaseRepository implements UserRepositoryInterface
     {
         parent::__construct($model);
     }
+
+    public function count()
+    {
+        return $this->model->count();
+    }
+
+    public function updateMilestone(string $milestoneLevel)
+    {
+        return $this->model->whereNull('milestone')->update(['milestone' => $milestoneLevel]);
+    }
 }
