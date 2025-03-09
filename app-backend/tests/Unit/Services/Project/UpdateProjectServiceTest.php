@@ -30,7 +30,7 @@ describe('UpdateProjectServiceTest', function () {
 
         // Create a mock project with tasks relationship
         $project = mock(Project::class);
-        $tasksRelation = mock('tasks');
+        $tasksRelation = mock(Task::class);
 
         // Setup the mocks
         $this->repository->shouldReceive('findById')
@@ -44,8 +44,16 @@ describe('UpdateProjectServiceTest', function () {
             ->andReturnSelf();
 
         $project->shouldReceive('tasks')
-            ->twice()
+            ->times(3)
             ->andReturn($tasksRelation);
+
+        // whereNotIn
+        $tasksRelation->shouldReceive('whereNotIn')
+            ->once()
+            ->with('id', array_column($projectData['tasks'], 'id'))
+            ->andReturnSelf();
+        $tasksRelation->shouldReceive('delete')
+            ->once();
 
         // Mock task 1 update
         $task1 = mock(Task::class);
