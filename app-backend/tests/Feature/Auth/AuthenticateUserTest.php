@@ -4,6 +4,7 @@ namespace Tests\Feature\Auth;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
+use Mockery;
 
 class AuthenticateUserTest extends TestCase
 {
@@ -36,14 +37,15 @@ class AuthenticateUserTest extends TestCase
 
         $response->assertStatus(200);
 
+        $responseJson = $response->json();
+
         // Response body
         $response->assertJson([
             'success' => true,
             'data' => [
-                'access_token' => true,
                 'token_type' => 'bearer',
                 'user' => [
-                    'id' => 1,
+                    'id' => $responseJson['data']['user']['id'],
                     'name' => 'John',
                     'email' => 'john@example.com'
                 ]

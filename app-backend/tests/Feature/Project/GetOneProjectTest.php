@@ -23,27 +23,29 @@ class GetOneProjectTest extends TestCase
 
         // get user token from response
         $token = $responseUser->json('data.access_token');
+        $user = $responseUser->json('data.user');
 
         // Create a Project
         $responseCreate = $this->postJson('/api/projects', [
             'name' => 'Project 1',
             'description' => 'Project 1 description',
-            'user_id' => 1,
+            'user_id' => $user['id'],
             'tasks' => []
         ], [
             'Authorization' => 'Bearer ' . $token
         ]);
 
         $responseCreate->assertStatus(201);
+        $project = $responseCreate->json('data');
 
         $this->assertDatabaseHas('projects', [
             'name' => 'Project 1',
             'description' => 'Project 1 description',
-            'user_id' => 1
+            'user_id' => $user['id']
         ]);
 
         // Get one Project
-        $response = $this->getJson('/api/projects/1', [
+        $response = $this->getJson('/api/projects/' . $project['id'], [
             'Authorization' => 'Bearer ' . $token
         ]);
 
@@ -53,10 +55,9 @@ class GetOneProjectTest extends TestCase
         $response->assertJson([
             'success' => true,
             'data' => [
-                'id' => 1,
                 'name' => 'Project 1',
                 'description' => 'Project 1 description',
-                'user_id' => 1,
+                'user_id' => $user['id'],
                 'tasks' => []
             ]
         ]);

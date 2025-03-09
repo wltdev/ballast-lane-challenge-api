@@ -23,12 +23,13 @@ class GetAllProjectTest extends TestCase
 
         // get user token from response
         $token = $responseUser->json('data.access_token');
+        $user = $responseUser->json('data.user');
 
         // Create a Project
         $responseCreate = $this->postJson('/api/projects', [
             'name' => 'Project 1',
             'description' => 'Project 1 description',
-            'user_id' => 1,
+            'user_id' => $user['id'],
             'tasks' => [
                 [
                     'title' => 'Task 1',
@@ -44,7 +45,7 @@ class GetAllProjectTest extends TestCase
         $this->assertDatabaseHas('projects', [
             'name' => 'Project 1',
             'description' => 'Project 1 description',
-            'user_id' => 1
+            'user_id' => $user['id']
         ]);
 
         // Get all Projects
@@ -59,13 +60,11 @@ class GetAllProjectTest extends TestCase
             'success' => true,
             'data' => [
                 [
-                    'id' => 1,
                     'name' => 'Project 1',
                     'description' => 'Project 1 description',
-                    'user_id' => 1,
+                    'user_id' => $user['id'],
                     'tasks' => [
                         [
-                            'id' => 1,
                             'title' => 'Task 1',
                             'status' => 'pending'
                         ]

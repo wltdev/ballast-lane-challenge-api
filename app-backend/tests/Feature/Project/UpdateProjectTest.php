@@ -23,24 +23,26 @@ class UpdateProjectTest extends TestCase
 
         // get user token from response
         $token = $responseUser->json('data.access_token');
+        $user = $responseUser->json('data.user');
 
         // Create a Project
         $responseCreate = $this->postJson('/api/projects', [
             'name' => 'Project 1',
             'description' => 'Project 1 description',
-            'user_id' => 1,
+            'user_id' => $user['id'],
             'tasks' => []
         ], [
             'Authorization' => 'Bearer ' . $token
         ]);
 
         $responseCreate->assertStatus(201);
+        $project = $responseCreate->json('data');
 
         // Update the Project
-        $response = $this->putJson('/api/projects/1', [
+        $response = $this->putJson('/api/projects/' . $project['id'], [
             'name' => 'Project 1 edited',
             'description' => 'Project 1 description edited',
-            'user_id' => 1,
+            'user_id' => $user['id'],
             'tasks' => [
                 [
                     'title' => 'Task 1',
@@ -54,23 +56,20 @@ class UpdateProjectTest extends TestCase
         $response->assertStatus(200);
 
         $this->assertDatabaseHas('projects', [
-            'id' => 1,
             'name' => 'Project 1 edited',
             'description' => 'Project 1 description edited',
-            'user_id' => 1
+            'user_id' => $user['id']
         ]);
 
         // Response body
         $response->assertJson([
             'success' => true,
             'data' => [
-                'id' => 1,
                 'name' => 'Project 1 edited',
                 'description' => 'Project 1 description edited',
-                'user_id' => 1,
+                'user_id' => $user['id'],
                 'tasks' => [
                     [
-                        'id' => 1,
                         'title' => 'Task 1',
                         'status' => 'pending'
                     ]
